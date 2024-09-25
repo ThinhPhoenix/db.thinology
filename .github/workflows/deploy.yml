@@ -25,6 +25,11 @@ jobs:
       - name: Download Dependencies 📦
         run: go mod download # Downloads dependencies specified in go.mod
 
+      - name: Clean build folder 🧹
+        run: |
+          rm -rf build
+          mkdir build
+
       - name: Build Go project 🔧
         run: go build -o build/myapp main.go # Build the project output to the 'build' folder
 
