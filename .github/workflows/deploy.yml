@@ -20,20 +20,20 @@ jobs:
       - name: Set up Go 🔧
         uses: actions/setup-go@v4
         with:
-          go-version: '1.22.3' # Match the Go version in your go.mod
+          go-version: '1.22.3'
 
       - name: Download Dependencies 📦
-        run: go mod download # Downloads dependencies specified in go.mod
-
-      - name: Clean build folder 🧹
-        run: |
-          rm -rf build
-          mkdir build
+        run: go mod download
 
       - name: Build Go project 🔧
-        run: go build -o build/myapp main.go # Build the project output to the 'build' folder
+        run: go build -o myapp main.go
 
-      - name: Deploy 🚀
+      - name: Create Deployment Folder 📁
+        run: |
+          mkdir -p public
+          mv myapp public/ # Move your binary or static files to public
+
+      - name: Deploy to GitHub Pages 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build # Deploy the 'build' folder containing the binary
+          folder: public # Deploy the 'public' folder containing your static files
