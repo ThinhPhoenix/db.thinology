@@ -1,0 +1,34 @@
+name: Build and Deploy
+
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Set up Go 🔧
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.3' # Match the Go version in your go.mod
+
+      - name: Download Dependencies 📦
+        run: go mod download # Downloads dependencies specified in go.mod
+
+      - name: Build Go project 🔧
+        run: go build -o build/myapp main.go # Build the project output to the 'build' folder
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build # Deploy the 'build' folder containing the binary
